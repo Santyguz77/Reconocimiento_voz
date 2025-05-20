@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconocimiento de voz</title>
+    <link rel ="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <h1>Reconocimiento de voz</h1>
+    <h2>Introducción</h2>
+    <p>Este es un programa de reconocimiento de voz que utiliza la API de Web Speech para convertir el habla en texto.</p>
+    <h2>Unidades tecnologicas de Santander</h2>
+    <p>Este programa fue desarrollado por estudiantes de la Universidad Tecnológica de Santander como parte de un proyecto académico.</p>
+    
+    <button onclick="iniciarReconocimiento()">Iniciar reconocimiento de voz</button>
+    <p id="resultado"></p>
+    <div class="Cajon-texto" id="cajonTexto"></div>
+    <script>
+        function iniciarReconocimiento() {
+            const resultado = document.getElementById('resultado');
+            const cajon = document.getElementById('cajonTexto');
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                resultado.textContent = "Tu navegador no soporta reconocimiento de voz.";
+                return;
+            }
+            const reconocimiento = new SpeechRecognition();
+            reconocimiento.lang = "es-ES";  
+            reconocimiento.onresult = function(event) {
+                const texto = event.results[0][0].transcript.toLowerCase();
+                if (texto.includes("hola")) {
+                    cajon.textContent = "¡Hola! ¿En qué puedo ayudarte?";
+                } else if (texto.includes("adios") || texto.includes("adiós")) {
+                    cajon.textContent = "¡Adiós! Que tengas un buen día.";
+                } else if (texto.includes("que haces")|| texto.includes("qué haces")) {
+                    cajon.textContent = "Soy tu asistente para lo que necesites.";
+                } else if (texto.includes("limon") || texto.includes("limón")) {
+                    cajon.innerHTML = 'Esto es un Limón<br><img src="limon.jpg" alt="Limón" style="max-width:200px; margin-top:10px;">';
+                } else if (texto.includes("edificio a") || texto.includes("edificio A")) {
+                    cajon.innerHTML = 'Esto es el Edificio A<br><img src="edificioA.jpg" alt="Edificio A" style="max-width:500px; margin-top:10px;">';
+                } else if (texto.includes("edificio b") || texto.includes("edificio B")) {
+                    cajon.innerHTML = 'Esto es el Edificio B<br><img src="edificioB.jpg" alt="Edificio B" style="max-width:500px; margin-top:10px;">';
+                } else if (texto.includes("edificio c") || texto.includes("edificio C")) {
+                    cajon.innerHTML = 'Esto es el Edificio C<br><img src="edificioC.jpg" alt="Edificio C" style="max-width:500px; margin-top:10px;">';
+                }
+                else {
+                    cajon.textContent = "Has dicho: " + event.results[0][0].transcript;
+                }
+            };
+            reconocimiento.onerror = function(event) {
+                cajon.textContent = "Error: " + event.error;
+            };
+            reconocimiento.start();
+        }
+    </script>
+
+</body>
+</html>

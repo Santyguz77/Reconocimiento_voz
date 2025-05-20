@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<link rel="stylesheet" href="style.css"> 
+<head>
+    <meta charset="UTF-8">
+    <title>Reconocimiento de Voz en HTML</title>
+</head>
+<body>
+    <h1>Reconocimiento de Voz en el Navegador</h1>
+    <button onclick="iniciarReconocimiento()">Hablar</button>
+    <p id="resultado"></p>
+    <script>
+        function iniciarReconocimiento() {
+            const resultado = document.getElementById('resultado');
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                resultado.textContent = "Tu navegador no soporta reconocimiento de voz.";
+                return;
+            }
+            const reconocimiento = new SpeechRecognition();
+            reconocimiento.lang = "es-ES";
+            reconocimiento.onresult = function(event) {
+                resultado.textContent = "Has dicho: " + event.results[0][0].transcript;
+            };
+            reconocimiento.onerror = function(event) {
+                resultado.textContent = "Error: " + event.error;
+            };
+            reconocimiento.start();
+        }
+    </script>
+</body>
+</html>
+
